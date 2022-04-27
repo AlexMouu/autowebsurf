@@ -2,35 +2,40 @@ from PIL import Image
 import cv2, numpy as np
 from retrying import retry
 from selenium import webdriver
-import os, sys, time, ddddocr, requests
-from selenium.webdriver import ActionChains
+import os, sys, ddddocr, requests
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--no-sandbox') # 解决DevToolsActivePort文件不存在的报错
-chrome_options.add_argument('window-size=1920x1080') # 指定浏览器分辨率
-chrome_options.add_argument('--disable-gpu') # 谷歌文档提到需要加上这个属性来规避bug
-chrome_options.add_argument('--headless') # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
+chrome_options.add_argument('--no-sandbox')  # 解决DevToolsActivePort文件不存在的报错
+chrome_options.add_argument('window-size=1920x1080')  # 指定浏览器分辨率
+chrome_options.add_argument('--disable-gpu')  # 谷歌文档提到需要加上这个属性来规避bug
+chrome_options.add_argument(
+    '--headless')  # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
+
 
 def get_web_driver():
-    chromedriver = "/usr/bin/chromedriver"
+    chromedriver = "./chromedriver.exe"
     os.environ["webdriver.chrome.driver"] = chromedriver
-    driver = webdriver.Chrome(executable_path=chromedriver, chrome_options=chrome_options)
-    driver.implicitly_wait(10) # 所有的操作都可以最长等待10s
+    driver = webdriver.Chrome(executable_path=chromedriver,
+                              chrome_options=chrome_options)
+    driver.implicitly_wait(10)  # 所有的操作都可以最长等待10s
     return driver
+
 
 # 一直等待某元素可见，默认超时10秒（此函数暂时没有使用）
 def is_visible(driver, locator, timeout=10):
     try:
-        element = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.XPATH, locator)))
+        element = WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located((By.XPATH, locator)))
         return element
-    except TimeoutException:
+    except TimeoutError:
         return False
 
-def Ocr_Captcha(driver, locator, img_path): # 验证码识别
+
+def Ocr_Captcha(driver, locator, img_path):  # 验证码识别
     propertery = driver.find_element_by_xpath(locator)
     driver.save_screenshot(img_path)
     img = Image.open(img_path)
@@ -47,6 +52,7 @@ def Ocr_Captcha(driver, locator, img_path): # 验证码识别
         img_bytes = f.read()
     res = ocr.classification(img_bytes)
     return res
+
 
 class Track(object):
     # 处理前图片
@@ -65,7 +71,8 @@ class Track(object):
     @staticmethod
     def gen_normal_track(distance):
         def norm_fun(x, mu, sigma):
-            pdf = np.exp(-((x - mu) ** 2) / (2 * sigma ** 2)) / (sigma * np.sqrt(2 * np.pi))
+            pdf = np.exp(-((x - mu)**2) /
+                         (2 * sigma**2)) / (sigma * np.sqrt(2 * np.pi))
             return pdf
 
         result = []
@@ -137,7 +144,8 @@ class Track(object):
         # 读取背景图
         background_pic = cv2.imread(self.background_bak)
         # 比较两张图的重叠区域
-        result = cv2.matchTemplate(slider_pic, background_pic, cv2.TM_CCOEFF_NORMED)
+        result = cv2.matchTemplate(slider_pic, background_pic,
+                                   cv2.TM_CCOEFF_NORMED)
         # 获取图片的缺口位置
         top, left = np.unravel_index(result.argmax(), result.shape)
         # 背景图中的图片缺口坐标位置
