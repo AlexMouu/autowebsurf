@@ -5,8 +5,8 @@ name: myWorkFlow
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-      branches: [ master ]
+  # push:
+  #     branches: [ master ]
   # pull_request:
     # branches: [ master ]
   schedule:
@@ -42,12 +42,3 @@ jobs:
           python ./7日杀论坛签到.py ${{ secrets.SEVENDAYSTODIE_USERNAME }} ${{ secrets.SEVENDAYSTODIE_PASSWORD }}
           python ./cangku签到.py ${{ secrets.CANGKU_USERNAME }} ${{ secrets.CANGKU_PASSWORD }}
           python ./moehuan签到.py ${{ secrets.MOEHUAN_USERNAME }} ${{ secrets.MOEHUAN_PASSWORD }}
-
-
-
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          # echo Add other actions to build,
-          # echo test, and deploy your project.
