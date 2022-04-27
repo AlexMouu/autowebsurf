@@ -17,7 +17,7 @@ chrome_options.add_argument(
 
 
 def get_web_driver():
-    chromedriver = "./chromedriver.exe"
+    chromedriver = "/usr/bin/chromedriver"
     os.environ["webdriver.chrome.driver"] = chromedriver
     driver = webdriver.Chrome(executable_path=chromedriver,
                               chrome_options=chrome_options)
