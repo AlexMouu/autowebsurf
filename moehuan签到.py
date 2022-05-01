@@ -22,7 +22,7 @@ def main():
         driver.find_element_by_xpath(
             '''//*[@id="inn-sign__dialog__fm"]/footer/button''').click()
         driver.find_element_by_xpath(
-            '''//*[@id="inn-nav__point-sign-daily"]/a''').click()
+            '''//*[@id="inn-nav__point-sign-daily"]''').click()
     except:
         raise
     finally:
