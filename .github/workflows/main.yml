@@ -41,4 +41,3 @@ jobs:
           chmod -R 777 /usr/bin/chromedriver
           python ./7日杀论坛签到.py ${{ secrets.SEVENDAYSTODIE_USERNAME }} ${{ secrets.SEVENDAYSTODIE_PASSWORD }}
           python ./cangku签到.py ${{ secrets.CANGKU_USERNAME }} ${{ secrets.CANGKU_PASSWORD }}
-          python ./moehuan签到.py ${{ secrets.MOEHUAN_USERNAME }} ${{ secrets.MOEHUAN_PASSWORD }}
