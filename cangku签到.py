@@ -3,7 +3,7 @@ from util import *
 userName = sys.argv[1]
 password = sys.argv[2]
 
-
+//更新github
 @retry(stop_max_attempt_number=5)
 def main():
     try:
@@ -25,3 +25,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
